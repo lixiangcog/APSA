@@ -1,31 +1,37 @@
-# RAGTTA Prostate Online (Supplementary)
+# RAGTTA Minimal Reproducibility Package
 
-This folder is a clean, standalone package for the **prostate online Table 4 result** used in the paper supplementary experiment.
+This repository contains minimal code and result artifacts for two datasets:
 
-## What this package is for
+- OD/OC segmentation
+- Prostate online adaptation
 
-- Re-check the final reported numbers for 5 target sets:
-  - BMC, I2CVB, UCL, BIDMC, HK
-- Map each table number to the exact `run.log` line.
-- Provide a minimal upload checklist for GitHub.
+## Repository layout
 
-## Included files
+- `ragtta_odoc_min_release/`  
+  Minimal OD/OC package, including table data for the three OD/OC tables and renamed runnable entry scripts.
 
-- `code/`: minimal runnable code snapshot for prostate online table reproduction.
-- `upload_manifest.md`: what to upload / what not to upload.
-- `results/table4_ragtta_online_prostate.csv`: final table numbers.
-- `results/table4_ragtta_online_prostate_logs.md`: source log paths and lines.
-- `scripts/extract_table4_from_logs.sh`: parse `dice_final` and `hd_final` from logs and regenerate CSV.
+- `code/`, `results/`, `scripts/`  
+  Minimal prostate online package with Table 4 result files and verification script.
 
-## Quick verify
+- `upload_manifest.md`  
+  Upload/include guidance for compact sharing.
+
+## Prostate quick verify
 
 ```bash
-cd <repo_root>/ragtta_prostate_online_release
+cd <repo_root>
 bash scripts/extract_table4_from_logs.sh <log_root>/log_dir_online_restore_v1
 cat results/table4_ragtta_online_prostate.csv
 ```
 
+## OD/OC quick verify
+
+```bash
+cd <repo_root>/ragtta_odoc_min_release
+bash scripts/verify_odoc_tables.sh
+```
+
 ## Notes
 
-- This folder does **not** include raw data, full log directories, or large model weights.
-- It is intended for reproducibility of the reported supplementary table numbers.
+- This repository excludes raw data, full experiment logs, and large model weights.
+- Paths in documents are intentionally generic for portability.
