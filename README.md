@@ -1,9 +1,28 @@
-# RAGTTA Minimal Reproducibility Package
+# RAGTTA: Reliability-Aware Guided Continual Test-Time Adaptation with Multimodal Priors for Medical Anatomical Region Segmentation
 
-This repository contains minimal code and result artifacts for two datasets:
+## Project Overview
 
-- OD/OC segmentation
-- Prostate online adaptation
+RAGTTA is a continual test-time adaptation (CTTA) framework for medical anatomical region segmentation under cross-center distribution shifts.  
+It is designed for annotation-free online deployment, where models must adapt safely to evolving target-domain streams without offline retraining.
+
+RAGTTA addresses three key CTTA challenges in clinical streaming settings:
+
+1. unreliable sample-driven updates that cause drift,
+2. unstable use of structural/anatomical priors,
+3. lack of recovery once harmful updates are introduced.
+
+To tackle this, RAGTTA introduces a reliability-aware closed-loop adaptation strategy with:
+
+- sample-wise reliability gating for update triggering and strength control,
+- risk-triggered rollback/recovery to prevent error accumulation,
+- teacher-student stabilized online updates,
+- controllable multimodal prior injection for semantic-structural consistency,
+- Shift-Decomposed Adaptation (SDA) to balance adaptation plasticity and stability.
+
+This repository provides minimal reproducibility packages for:
+
+- OD/OC segmentation experiments,
+- Prostate online adaptation experiments.
 
 ## Repository layout
 
