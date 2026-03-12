@@ -24,6 +24,26 @@ This repository provides minimal reproducibility packages for:
 - OD/OC segmentation experiments,
 - Prostate online adaptation experiments.
 
+## Environment
+
+Tested base environment:
+
+- Python 3.7.9
+- PyTorch 1.13.1
+- TorchVision 0.14.1
+- NumPy 1.19.2
+
+Quick install (pip):
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+pip install torch==1.13.1 torchvision==0.14.1
+pip install numpy==1.19.2 scipy pandas matplotlib seaborn tqdm requests
+pip install SimpleITK nibabel medpy opencv-python scikit-image einops batchgenerators
+```
+
 ## Repository layout
 
 - `ragtta_odoc_min_release/`  
