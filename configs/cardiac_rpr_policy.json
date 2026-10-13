@@ -1,0 +1,41 @@
+{
+  "selection_data": "Source-A mixed deterministic intensity shifts only",
+  "target_labels_used": false,
+  "selection_rule": "ASSD <= interval-1 ASSD + 0.002 evaluator units; maximize Dice; tie-break to the smallest interval",
+  "baseline_interval": 1,
+  "selected_interval": 3,
+  "records": [
+    {
+      "interval": 1,
+      "dice": 0.9296820759773254,
+      "assd": 0.9609623551368713,
+      "restorations": 8,
+      "commits": 0,
+      "rollback_span": 8
+    },
+    {
+      "interval": 2,
+      "dice": 0.9296824932098389,
+      "assd": 0.960862398147583,
+      "restorations": 8,
+      "commits": 73,
+      "rollback_span": 13
+    },
+    {
+      "interval": 3,
+      "dice": 0.9297113418579102,
+      "assd": 0.9605180621147156,
+      "restorations": 10,
+      "commits": 46,
+      "rollback_span": 20
+    },
+    {
+      "interval": 4,
+      "dice": 0.929703414440155,
+      "assd": 0.9604832530021667,
+      "restorations": 7,
+      "commits": 34,
+      "rollback_span": 23
+    }
+  ]
+}

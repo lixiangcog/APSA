@@ -1,0 +1,37 @@
+MODEL:
+  NETWORK: unet
+  # Overridden by configs/run_cardiac.sh from the CHECKPOINT environment variable.
+  CKPT_DIR: checkpoints/source-A-source-model-latest.pth
+  DATASET: mms2d
+  NUMBER_CLASS: 4
+  METHOD: a3-tta
+  EXPNAME: a3orig
+
+ADAPTATION:
+  BATCH_SIZE: 10
+  EPOCH: 1
+  TARGET_DOMAIN:
+  - B
+  - C
+  - D
+
+OPTIM:
+  METHOD: Adam
+  STEPS: 1
+  BETA: 0.9
+  LR: 1e-4
+  WD: 0.
+  MT: 0.999
+  RST: 0.01
+  AP: 0.92
+
+SOURCE:
+  MAX_EPOCHES: 50
+  BATCH_SIZE: 12
+  EVAL_ITERS: 100
+  SOURCE_DOMAIN: A
+  ALL_DOMAIN:
+    - A
+    - B
+    - C
+    - D

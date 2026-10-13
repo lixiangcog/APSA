@@ -1,76 +1,97 @@
-# RAGTTA: Reliability-Aware Guided Continual Test-Time Adaptation with Multimodal Priors for Medical Anatomical Region Segmentation
+# APSA
 
-## Project Overview
+Reference implementation for **State-Aware Continual Test-Time Adaptation via
+Anatomical Prior Guidance for Medical Image Segmentation**.
 
-RAGTTA is a continual test-time adaptation (CTTA) framework for medical anatomical region segmentation under cross-center distribution shifts.  
-It is designed for annotation-free online deployment, where models must adapt safely to evolving target-domain streams without offline retraining.
+APSA follows a shared evidence–adapt–select–retain procedure while registering
+task-specific anatomical evidence, mutable state, candidate predictions, and
+state-reversion policies. The three experiments are therefore provided as
+separate reference runners rather than presented as one identical loss or one
+identical rollback rule.
 
-RAGTTA addresses three key CTTA challenges in clinical streaming settings:
+## What is included
 
-1. unreliable sample-driven updates that cause drift,
-2. unstable use of structural/anatomical priors,
-3. lack of recovery once harmful updates are introduced.
+| Task | Core implementation | Reference launcher |
+|---|---|---|
+| Cardiac M&Ms | `apsa/cardiac/apsa_mms.py` | `configs/run_cardiac.sh` |
+| Multi-site prostate MRI | `apsa/prostate/apsa_prostate.py` | `configs/run_prostate.sh` |
+| Fundus OD/OC | `apsa/fundus/apsa_optic.py` | `configs/run_fundus.sh` |
 
-To tackle this, RAGTTA introduces a reliability-aware closed-loop adaptation strategy with:
+The prostate folder also contains the utility used to construct fixed
+BioMedCLIP localization maps. Small, label-free cardiac calibration records
+are included under `configs/`.
 
-- sample-wise reliability gating for update triggering and strength control,
-- risk-triggered rollback/recovery to prevent error accumulation,
-- teacher-student stabilized online updates,
-- controllable multimodal prior injection for semantic-structural consistency,
-- Shift-Decomposed Adaptation (SDA) to balance adaptation plasticity and stability.
+This is intentionally a compact, code-only release. It does **not** include
+medical images, annotations, predictions, model weights, full logs, sweep
+outputs, or patient/case-level result files.
 
-This repository provides minimal reproducibility packages for:
+## Base code and environment
 
-- OD/OC segmentation experiments,
-- Prostate online adaptation experiments.
+The task runners are thin experiment overlays and expect the corresponding
+research codebase on `PYTHONPATH`:
 
-## Environment
+- cardiac: [A3-TTA](https://github.com/HiLab-git/A3-TTA);
+- prostate: [PASS](https://github.com/EndoluminalSurgicalVision-IMR/PASS);
+- fundus: [VPTTA](https://github.com/Chen-Ziyang/VPTTA) with its OPTIC layout.
 
-Tested base environment:
-
-- Python 3.7.9
-- PyTorch 1.13.1
-- TorchVision 0.14.1
-- NumPy 1.19.2
-
-Quick install (pip):
+The original experiments used Python 3.7.9, PyTorch 1.13.1, and TorchVision
+0.14.1. Install PyTorch for the CUDA version available on your machine, then
+install the additional packages in `requirements.txt`.
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
-pip install torch==1.13.1 torchvision==0.14.1
-pip install numpy==1.19.2 scipy pandas matplotlib seaborn tqdm requests
-pip install SimpleITK nibabel medpy opencv-python scikit-image einops batchgenerators
+python -m pip install -r requirements.txt
 ```
 
-## Repository layout
+## Running the reference configurations
 
-- `ragtta_odoc_min_release/`  
-  Minimal OD/OC package, including table data for the three OD/OC tables and renamed runnable entry scripts.
-
-- `code/`, `results/`, `scripts/`  
-  Minimal prostate online package with Table 4 result files and verification script.
-
-- `upload_manifest.md`  
-  Upload/include guidance for compact sharing.
-
-## Prostate quick verify
+Each launcher requires paths through environment variables; no author-machine
+path is embedded in the release.
 
 ```bash
-cd <repo_root>
-bash scripts/extract_table4_from_logs.sh <log_root>/log_dir_online_restore_v1
-cat results/table4_ragtta_online_prostate.csv
+# Cardiac, B -> C -> D, checkpointed state retention.
+BASE_ROOT=/path/to/A3-TTA \
+CHECKPOINT=/path/to/source-A-source-model-latest.pth \
+PYTHON=python \
+bash configs/run_cardiac.sh --run 0 BCD plus
+
+# Prostate, one independently initialized run per target domain.
+BASE_ROOT=/path/to/PASS \
+PYTHON=python \
+bash configs/run_prostate.sh
+
+# Fundus, one source job followed by its registered target stream.
+BASE_ROOT=/path/to/VPTTA/OPTIC \
+DATASET_ROOT=/path/to/Fundus \
+MODEL_ROOT=/path/to/source/checkpoints \
+PYTHON=python \
+bash configs/run_fundus.sh
 ```
 
-## OD/OC quick verify
+The launchers refuse to run when required paths are missing and write only to
+`outputs/` by default. Dataset layouts and checkpoint names remain those of
+the cited base repositories; see `docs/DATA_AND_WEIGHTS.md`.
 
-```bash
-cd <repo_root>/ragtta_odoc_min_release
-bash scripts/verify_odoc_tables.sh
-```
+## Reproducibility notes
 
-## Notes
+- Target labels are not consumed by the adaptation or state-selection code.
+- The prostate semantic localization map is precomputed and fixed during
+  online adaptation. The registered prompt is `Prostate gland.`
+- The reported fundus configuration does not require a vision-language model.
+- Some internal command-line names, such as `--use-apssa`, are retained for
+  checkpoint and launcher compatibility; they refer to APSA.
+- Evaluation units and aggregation rules must be kept identical when comparing
+  methods. This repository does not mix published table values with locally
+  paired statistical claims.
 
-- This repository excludes raw data, full experiment logs, and large model weights.
-- Paths in documents are intentionally generic for portability.
+See `docs/RELEASE_SCOPE.md` for provenance hashes and the exact exclusions made
+for this minimal public snapshot.
+
+## Third-party code and licensing
+
+The runners integrate with external research repositories and checkpoints,
+which are governed by their respective terms. No project-wide license is
+asserted for third-party components in this compact snapshot. Review
+`THIRD_PARTY_NOTICES.md` before redistribution or downstream packaging.

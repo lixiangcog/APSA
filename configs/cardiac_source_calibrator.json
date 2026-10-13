@@ -1,0 +1,67 @@
+{
+  "version": 2,
+  "method": "source_a_preupdate_quantile_rpr",
+  "source": "Source-A",
+  "calibration_groups": [
+    "bias_field",
+    "gamma_high",
+    "gamma_low",
+    "none"
+  ],
+  "feature_names": [
+    "entropy_increase",
+    "prior_align_drop",
+    "center_distance_increase",
+    "topology_drop",
+    "confidence_drop",
+    "pre_adapt_drift",
+    "fg_log_ratio_abs",
+    "rv_soft_area_drop",
+    "rv_pred_area_drop",
+    "rv_confidence_drop",
+    "class_collapse_fraction"
+  ],
+  "feature_thresholds": [
+    6.188079714775085e-06,
+    0.0,
+    3.8108322769403427e-06,
+    3.0362606048583963e-05,
+    5.960464477539062e-07,
+    2.5405182668691833e-06,
+    6.551667024882718e-05,
+    6.354413926601407e-07,
+    1.1283438652753436e-06,
+    3.6495923995971663e-05,
+    0.0
+  ],
+  "feature_groups": {
+    "uncertainty": [
+      "entropy_increase",
+      "confidence_drop"
+    ],
+    "anatomy": [
+      "prior_align_drop",
+      "center_distance_increase",
+      "topology_drop"
+    ],
+    "foreground": [
+      "fg_log_ratio_abs",
+      "class_collapse_fraction"
+    ],
+    "rv_reliability": [
+      "rv_soft_area_drop",
+      "rv_pred_area_drop",
+      "rv_confidence_drop"
+    ]
+  },
+  "feature_quantile": 0.95,
+  "vote_threshold": 2,
+  "harm_definition": "adapted_dice < pre_update_dice - 0.0",
+  "sample_count": 640,
+  "harmful_count": 339,
+  "calibration_trigger_count": 42,
+  "calibration_harm_recall": 0.07964601769911504,
+  "calibration_false_positive_rate": 0.04983388704318937,
+  "source_labels_used_for_thresholds": false,
+  "target_labels_used": false
+}
