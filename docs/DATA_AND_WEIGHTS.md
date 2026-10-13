@@ -63,20 +63,28 @@ not the primary provenance authority for the underlying scans.
 
 ### Fixed BioMedCLIP localization maps
 
-The fixed semantic-localization maps can be prepared with:
+The reference runner consumes fixed semantic-localization maps, but the exact
+maps used for the reported experiment are not redistributed. The included
+`generate_biomedclip_priors.py` is an unverified legacy utility: an audit found
+substantial missing and unexpected checkpoint keys with the BioMedCLIP revision
+listed below. Do not use its current output as a reproduction artifact.
+
+For an already verified experiment-generated `*_clip.npy` map, the format-only
+converter creates the portable `.npz` read by the runner:
 
 ```bash
-python apsa/prostate/generate_biomedclip_priors.py \
-  --model_path /path/to/biomedclip_snapshot \
-  --data_path /path/to/MRI_prostate \
-  --save_path /path/to/MRI_prostate/clip_priors
+python apsa/prostate/convert_clip_priors_npy_to_npz.py \
+  --root /path/to/MRI_prostate/clip_priors
 ```
 
-The reference model is
+The intended checkpoint identifier recorded by this release is
 `microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224`, revision
-`9f341de24bfb00180f1b847274256e9b65a3a32e`. The text prompt is
-`Prostate gland.` Maps are generated offline and remain fixed during target
-adaptation.
+`9f341de24bfb00180f1b847274256e9b65a3a32e`. The packaged legacy utility
+hard-codes `Prostate gland.`, but the prompt set and preprocessing provenance of
+the exact reported maps are not established by this snapshot. A corrected
+generator must verify checkpoint load coverage and publish that metadata plus
+reference-map checksums. The converter above changes serialization only and
+does not validate map provenance. Maps remain fixed during target adaptation.
 
 ## Fundus OD/OC
 
@@ -95,8 +103,8 @@ compatibility. They are not adaptation methods or dataset providers.
 
 ### APSA protocol and local layout
 
-The reference jobs use these five registered domains as the labeled source in
-turn, with the remaining four forming that job's target stream. Use the
+The manuscript protocol uses these five registered domains as the labeled
+source in turn, with the remaining four forming that job's target stream. Use the
 manifest, preprocessing, and OPTIC directory conventions of
 [VPTTA](https://github.com/Chen-Ziyang/VPTTA). VPTTA defines the compatible
 software layout; the table above records the underlying data provenance.

@@ -14,7 +14,33 @@ three task registrations and their frozen launch arguments.
 The core runner logic is preserved; files are renamed and placed under
 `apsa/` for a clearer public layout. The packaged prostate file differs only
 by removal of trailing whitespace. Launchers were path-parameterized for
-portability.
+portability. These hashes establish the provenance of the packaged runner
+files only; they do not establish a complete end-to-end environment.
+
+## Integration boundary
+
+The public audit used A3-TTA `98675706ac120f08fa504632e94b3cf375b750d6`,
+PASS `0b7f66d494d7353ee1b04701f943412ac5937ce7`, and VPTTA
+`7e0a3776100d1350cd2bd0c9c3431522c5940027` as inspectable upstream bases.
+These are audit-time compatibility points, not claimed experiment-time
+revisions.
+
+The frozen prostate runner also imports APSA-compatible changes to PASS model
+construction, optimizer grouping, EMA/reset behavior, and path configuration.
+Those integration changes are not present in vanilla PASS and are not included
+in this compact snapshot. Consequently, `configs/run_prostate.sh` documents the
+frozen invocation for a prepared compatible worktree; it is not yet a
+standalone reproduction recipe.
+
+The packaged fundus launcher is also not the manuscript Table IV recipe: it
+uses a three-round stream and nonzero central/cup prior-loss weights, while the
+reported task registration uses one round, prediction-derived adaptive OD
+support, and no prior-supervised loss. The packaged command is retained as a
+post-manuscript snapshot variant only.
+
+The packaged BioMedCLIP generator is a legacy inspection utility whose
+checkpoint load coverage has not passed audit. It must not be used to recreate
+the reported prostate priors until its loader is corrected and verified.
 
 ## Deliberate exclusions
 
@@ -24,6 +50,12 @@ portability.
 - full logs, TensorBoard files, search/sweep outputs, and watchdog scripts;
 - manuscript drafts, chat/audit notes, and private filesystem paths;
 - duplicated baseline implementations and backup files;
+- the APSA-compatible PASS integration patch, pending a third-party license
+  audit and a fixed public revision;
+- the exact one-round fundus Table IV launcher and its result manifest;
+- verified prostate prior-generation code and reference-map checksums;
+- a spacing-aware audit establishing physical units for cardiac and prostate
+  surface-distance metrics;
 - statistical scripts whose pairing or multiple-comparison family has not
   completed the final paper audit.
 
