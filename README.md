@@ -25,10 +25,27 @@ This is intentionally a compact, code-only release. It does **not** include
 medical images, annotations, predictions, model weights, full logs, sweep
 outputs, or patient/case-level result files.
 
-## Base code and environment
+## Dataset provenance
+
+The datasets come from their original benchmark providers, **not** from
+A3-TTA, PASS, or VPTTA. Those repositories are software dependencies only.
+No dataset is redistributed here.
+
+| Task | Original dataset source | APSA domains |
+|---|---|---|
+| Cardiac MRI | [M&Ms Challenge](https://www.ub.edu/mnms/) ([access request](https://www.ub.edu/mnms/download.php)) | Source A; continual target stream B → C → D |
+| Prostate MRI | [NCI-ISBI 2013](https://www.cancerimagingarchive.net/analysis-result/isbi-mr-prostate-2013/) (RUNMC, BMC), [I2CVB](https://i2cvb.github.io/) (I2CVB/HCRUDB), and [PROMISE12](https://promise12.grand-challenge.org/Details/) (UCL, BIDMC, HK) | Source RUNMC; five target sites |
+| Fundus OD/OC | RIM-ONE-r3, [REFUGE](https://refuge.grand-challenge.org/Details/), ORIGA, and [Drishti-GS1](https://cvit.iiit.ac.in/projects/mip/drishti-gs/mip-dataset2/Home.php) | Five leave-one-domain-out jobs; `REFUGE_Valid` is the loader alias for REFUGE-Eval800, not a separate dataset |
+
+The exact domain aliases, partitions, primary citations, access pages, and
+code-layout mappings are documented in
+[`docs/DATA_AND_WEIGHTS.md`](docs/DATA_AND_WEIGHTS.md).
+
+## Software dependencies and environment
 
 The task runners are thin experiment overlays and expect the corresponding
-research codebase on `PYTHONPATH`:
+research codebase on `PYTHONPATH`. These links specify code and preprocessing
+compatibility; they are **not dataset-source links**:
 
 - cardiac: [A3-TTA](https://github.com/HiLab-git/A3-TTA);
 - prostate: [PASS](https://github.com/EndoluminalSurgicalVision-IMR/PASS);

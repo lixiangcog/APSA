@@ -1,8 +1,11 @@
 # Third-party notices
 
 APSA's task runners are experiment overlays for established research
-codebases. Users must obtain those projects, datasets, and checkpoints from
-their authorized sources and comply with their terms.
+codebases. The projects listed below are software dependencies, not the
+original dataset providers. Users must obtain each codebase, dataset, and
+checkpoint from its respective authorized source and comply with its terms;
+dataset provenance is listed separately in
+[`docs/DATA_AND_WEIGHTS.md`](docs/DATA_AND_WEIGHTS.md).
 
 | Component | Upstream project | Use in this release |
 |---|---|---|
