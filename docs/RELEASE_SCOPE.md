@@ -38,6 +38,11 @@ reported task registration uses one round, prediction-derived adaptive OD
 support, and no prior-supervised loss. The packaged command is retained as a
 post-manuscript snapshot variant only.
 
+The manuscript defines the cardiac online unit as ten consecutive 2-D slices.
+The public loader batches up to ten entries in CSV order but does not explicitly
+mark patient boundaries, so the prepared stream manifest should be checked
+against that protocol before reproduction.
+
 The packaged BioMedCLIP generator is a legacy inspection utility whose
 checkpoint load coverage has not passed audit. It must not be used to recreate
 the reported prostate priors until its loader is corrected and verified.
