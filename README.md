@@ -27,9 +27,6 @@ APSA has three main components:
   runtime state is retained or the task's predefined restorable variables are
   rolled back before the next input is processed.
 
-In short, APL guides the update, MRE chooses the current prediction, and RPR
-controls the state carried through the stream. Output selection and state
-retention are deliberately kept separate.
 
 ## Experimental protocols
 
@@ -82,8 +79,7 @@ environments may be easier to maintain:
 
 ## Data and source models
 
-Datasets and pretrained source models are not distributed in this repository.
-Obtain the data from the original providers and follow their access terms.
+
 
 | Task | Original datasets | APSA setting |
 |---|---|---|
@@ -91,15 +87,8 @@ Obtain the data from the original providers and follow their access terms.
 | Prostate MRI | [NCI-ISBI 2013](https://www.cancerimagingarchive.net/analysis-result/isbi-mr-prostate-2013/), [I2CVB](https://i2cvb.github.io/), and [PROMISE12](https://promise12.grand-challenge.org/Details/) | RUNMC is the source; BMC, I2CVB, UCL, BIDMC, and HK are targets |
 | Fundus OD/OC | [RIM-ONE-r3](https://medimrg.webs.ull.es/), [REFUGE](https://refuge.grand-challenge.org/Details/), [ORIGA](https://doi.org/10.1109/IEMBS.2010.5626137), and [Drishti-GS1](https://cvit.iiit.ac.in/projects/mip/drishti-gs/mip-dataset2/Home.php) | Five source-domain jobs; `REFUGE_Valid` denotes the REFUGE-Eval800 cohort |
 
-Dataset citations, case counts, aliases, expected directory layouts, and source
-checkpoint locations are listed in
-[`docs/DATA_AND_WEIGHTS.md`](docs/DATA_AND_WEIGHTS.md). A3-TTA, PASS, and VPTTA
-are upstream code dependencies; they are not the sources of the medical data.
-
 ## Run
 
-All commands below are run from the APSA repository root. Use absolute paths
-because each launcher changes into its upstream project directory.
 
 ### Cardiac M&Ms
 
@@ -111,14 +100,10 @@ PYTHON=/abs/path/to/python \
 bash configs/run_cardiac.sh --run 0 BCD current
 ```
 
-`BCD` is the reference stream order. The `current` policy is the per-unit RPR
-setting used for the paper result; `plus` is a later checkpointed extension.
 
 ### Multi-site prostate MRI
 
-The prostate runner expects the APSA-compatible PASS workspace used in the
-experiments. The required PASS integration patch is not included in the current
-release, so an unmodified PASS checkout is not sufficient for this command.
+
 
 ```bash
 BASE_ROOT=/abs/path/to/APSA-compatible-PASS \
@@ -141,7 +126,3 @@ PYTHON=/abs/path/to/python \
 bash configs/run_fundus.sh
 ```
 
-Source checkpoints must be stored as
-`<MODEL_ROOT>/<source>/last-Res_Unet.pth`. This launcher runs all five
-source-domain jobs. It records a later three-round development configuration
-and is not the one-round configuration used for the paper's Table IV result.
