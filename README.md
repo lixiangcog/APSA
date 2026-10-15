@@ -10,17 +10,9 @@ uses that evidence to guide online adaptation, selects a prediction for the
 current input, and separately decides which model state is passed to the next
 input.
 
-The same evidence–adapt–select–retain workflow is used for cardiac MRI,
-prostate MRI, and fundus optic disc/cup segmentation. The anatomical evidence,
-adapted variables, candidate predictions, and rollback scope are configured for
-each task.
 
 ![Conceptual comparison of APSA with representative test-time adaptation paradigms](assets/apsa_overview.png)
 
-*APSA introduces anatomical evidence into both adaptation and prediction
-selection, with a separate state-retention decision. The A and S bars in the
-figure are qualitative illustrations rather than measured scores or clinical
-safety guarantees.*
 
 ## Method
 
@@ -61,11 +53,6 @@ The following mean DSC values are reported in the manuscript.
 | Multi-site prostate MRI | 72.36 | 78.04 (locally evaluated PASS) | **80.37** | **+8.01** |
 | Fundus OD/OC | 65.86 | 71.93 (published VPTTA result) | **74.48** | **+8.62** |
 
-All values are percentages. The cardiac and prostate comparator values come
-from local evaluation; the fundus VPTTA value is a descriptive published
-reference. Full per-domain results, distance metrics, ablations, and statistical
-analyses are given in the paper. Case-level predictions and the final statistics
-script are not included in this release.
 
 ## Installation
 
@@ -158,55 +145,3 @@ Source checkpoints must be stored as
 `<MODEL_ROOT>/<source>/last-Res_Unet.pth`. This launcher runs all five
 source-domain jobs. It records a later three-round development configuration
 and is not the one-round configuration used for the paper's Table IV result.
-
-## Reproduction notes
-
-This release contains the three APSA runners, launcher arguments, cardiac RPR
-controller tests, and documentation. It does not contain medical data, source
-weights, experiment-generated prostate prior maps, prediction files, or logs.
-
-The prostate localization maps are fixed inputs during adaptation. The bundled
-BioMedCLIP generator is retained as a legacy utility and has not been verified
-as the recipe that produced the maps used in the paper. The public distance
-evaluators operate on the preprocessed image grid; spacing-aware values in
-millimetres should be recomputed before making a physical-unit claim.
-
-See [`docs/RELEASE_SCOPE.md`](docs/RELEASE_SCOPE.md) for upstream revisions,
-packaging boundaries, and known reproduction differences. Third-party sources
-and notices are recorded in
-[`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
-
-## Tests
-
-The included tests cover the cardiac RPR checkpoint controller:
-
-```bash
-PYTHONPATH="$(pwd):/abs/path/to/A3-TTA" \
-python -m unittest discover -s tests -v
-```
-
-## Citation
-
-```bibtex
-@misc{hui2026apsa,
-  title  = {State-Aware Continual Test-Time Adaptation via Anatomical Prior Guidance for Medical Image Segmentation},
-  author = {Hui, De and Li, Xiang and Zhang, Dan and He, Xiangjian and Han, Chengzhi and Mi, Shengli and Li, Zhenjiang and Li, Mei and Wang, Meili},
-  year   = {2026},
-  note   = {Manuscript under review}
-}
-```
-
-## Acknowledgements
-
-This repository builds on
-[A3-TTA](https://github.com/HiLab-git/A3-TTA),
-[PASS](https://github.com/EndoluminalSurgicalVision-IMR/PASS),
-[VPTTA](https://github.com/Chen-Ziyang/VPTTA), and
-[BioMedCLIP](https://huggingface.co/microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224).
-
-## License
-
-The repository includes components adapted to upstream research code and does
-not currently define a single project-wide license. Review
-[`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) before reuse or
-redistribution. Dataset and checkpoint terms apply separately.
